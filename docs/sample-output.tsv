@@ -1,0 +1,13 @@
+# 3 files, 12 findings
+critical	RBAC008	prod-cluster.json:ClusterRoleBinding/anon-secrets	User system:anonymous is bound to secret-reader: anyone on the network gets these rights
+critical	RBAC001	prod-cluster.json:ClusterRoleBinding/everyone-admin	Group system:authenticated is bound to cluster-admin
+high	RBAC004	prod-cluster.json:ClusterRole/debugger	can open a shell or attach inside pods or proxy to nodes: pods/exec
+high	RBAC005	prod-cluster.json:ClusterRole/debugger	verbs that bypass RBAC checks: bind, escalate
+high	RBAC002	prod-cluster.json:ClusterRole/dev-all	wildcard verbs on wildcard resources: this role is cluster-admin in all but name
+high	RBAC003	prod-cluster.json:ClusterRole/secret-reader	can read secrets in every namespace
+high	RBAC001	prod-cluster.json:ClusterRoleBinding/ci-admin	ServiceAccount ci/jenkins is bound to cluster-admin
+medium	RBAC006	prod-cluster.json:ClusterRole/debugger	can create or change roles and bindings: a path to more privilege
+medium	RBAC001	prod-cluster.json:ClusterRoleBinding/ci-admin	User alice@example.test is bound to cluster-admin
+medium	RBAC003	prod-cluster.json:Role/shop/cm-reader	can read secrets
+medium	RBAC007	prod-cluster.json:RoleBinding/shop/default-edit	the default service account of shop is bound to edit: every pod without its own account inherits it
+info	RBAC000	other.json	no Role, ClusterRole, RoleBinding or ClusterRoleBinding found
