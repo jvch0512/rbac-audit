@@ -2,6 +2,8 @@
 
 rbac-audit reads the JSON that `kubectl get roles,rolebindings,clusterroles,clusterrolebindings -A -o json` prints and works out who can do what: which subjects hold `cluster-admin`, which roles use wildcards, which can read every secret, open a shell in pods or change RBAC itself, and which bindings hand rights to anonymous users, every authenticated user or the `default` service account. Findings point at the role or binding by kind and name.
 
+![Terminal demo of rbac-audit on its sample data](docs/demo.svg)
+
 **Live demo:** https://jvch0512.github.io/rbac-audit/ (Synthetic cluster exports.)
 
 Crystal 1.x, standard library only. The demo page is rendered from the tool's `--tsv` output by `scripts/site.py` (Python 3, only needed to regenerate the page).
@@ -49,3 +51,13 @@ make test    # Crystal specs: role and binding rules on good and bad input, JSON
 ```
 
 MIT.
+
+## Code scanning (SARIF)
+
+`scripts/tsv2sarif.py` converts the `--tsv` output into SARIF 2.1.0, so findings show up in GitHub code scanning:
+
+```sh
+build/rbac-audit examples --tsv | python3 scripts/tsv2sarif.py --tool rbac-audit --prefix examples > results.sarif
+```
+
+Upload `results.sarif` with `github/codeql-action/upload-sarif`. Severities map to SARIF levels (critical and high to error, medium to warning, low and info to note) and to a `security-severity` score.
